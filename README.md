@@ -6,6 +6,8 @@
 
 Consider this project more of an example or a template to create solutions based on Hypervisor.framework than a useful application on its own.
 
+See [pagetable.com/?p=764](http://www.pagetable.com/?p=764) for details.
+
 ## Status
 
 *hvdos* can run some simple DOS programs in .COM format. Try [PKUNZJR.COM](https://github.com/libcpu/libcpu/blob/2fa4a9574a3320bd3953d1b238c36f55090405fb/test/bin/x86/pkunzjr.com?raw=true) for example.
