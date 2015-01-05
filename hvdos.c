@@ -66,6 +66,11 @@ cap2ctrl(uint64_t cap, uint64_t ctrl)
 int
 main(int argc, char **argv)
 {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: hvdos [com file]\n");
+                exit(1);
+    }
+
 	/* create a VM instance for the current task */
 	if (hv_vm_create(HV_VM_DEFAULT)) {
 		abort();
