@@ -112,11 +112,16 @@ main(int argc, char **argv)
 	}
 
 	/* vCPU setup */
-#define VMCS_PRI_PROC_BASED_CTLS_HLT (1 << 7)
+#define VMCS_PRI_PROC_BASED_CTLS_HLT           (1 << 7)
+#define VMCS_PRI_PROC_BASED_CTLS_CR8_LOAD      (1 << 19)
+#define VMCS_PRI_PROC_BASED_CTLS_CR8_STORE     (1 << 20)
 
 	/* set VMCS control fields */
-	wvmcs(vcpu, VMCS_PIN_BASED_CTLS, cap2ctrl(vmx_cap_pinbased, 0));
-	wvmcs(vcpu, VMCS_PRI_PROC_BASED_CTLS, cap2ctrl(vmx_cap_procbased, VMCS_PRI_PROC_BASED_CTLS_HLT));
+    wvmcs(vcpu, VMCS_PIN_BASED_CTLS, cap2ctrl(vmx_cap_pinbased, 0));
+    wvmcs(vcpu, VMCS_PRI_PROC_BASED_CTLS, cap2ctrl(vmx_cap_procbased,
+                                                   VMCS_PRI_PROC_BASED_CTLS_HLT |
+                                                   VMCS_PRI_PROC_BASED_CTLS_CR8_LOAD |
+                                                   VMCS_PRI_PROC_BASED_CTLS_CR8_STORE));
 	wvmcs(vcpu, VMCS_SEC_PROC_BASED_CTLS, cap2ctrl(vmx_cap_procbased2, 0));
 	wvmcs(vcpu, VMCS_ENTRY_CTLS, cap2ctrl(vmx_cap_entry, 0));
 	wvmcs(vcpu, VMCS_EXCEPTION_BITMAP, 0xffffffff);
