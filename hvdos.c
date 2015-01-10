@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <Hypervisor/hv.h>
 #include <Hypervisor/hv_vmx.h>
-#include "vmcs.h"
+#include <Hypervisor/hv_arch_vmx.h>
 #include "interface.h"
 #include "DOSKernel.h"
 
@@ -117,57 +117,57 @@ main(int argc, char **argv)
 #define VMCS_PRI_PROC_BASED_CTLS_CR8_STORE     (1 << 20)
 
 	/* set VMCS control fields */
-    wvmcs(vcpu, VMCS_PIN_BASED_CTLS, cap2ctrl(vmx_cap_pinbased, 0));
-    wvmcs(vcpu, VMCS_PRI_PROC_BASED_CTLS, cap2ctrl(vmx_cap_procbased,
+    wvmcs(vcpu, VMCS_CTRL_PIN_BASED, cap2ctrl(vmx_cap_pinbased, 0));
+    wvmcs(vcpu, VMCS_CTRL_CPU_BASED, cap2ctrl(vmx_cap_procbased,
                                                    VMCS_PRI_PROC_BASED_CTLS_HLT |
                                                    VMCS_PRI_PROC_BASED_CTLS_CR8_LOAD |
                                                    VMCS_PRI_PROC_BASED_CTLS_CR8_STORE));
-	wvmcs(vcpu, VMCS_SEC_PROC_BASED_CTLS, cap2ctrl(vmx_cap_procbased2, 0));
-	wvmcs(vcpu, VMCS_ENTRY_CTLS, cap2ctrl(vmx_cap_entry, 0));
-	wvmcs(vcpu, VMCS_EXCEPTION_BITMAP, 0xffffffff);
-	wvmcs(vcpu, VMCS_CR0_MASK, 0x60000000);
-	wvmcs(vcpu, VMCS_CR0_SHADOW, 0);
-	wvmcs(vcpu, VMCS_CR4_MASK, 0);
-	wvmcs(vcpu, VMCS_CR4_SHADOW, 0);
+	wvmcs(vcpu, VMCS_CTRL_CPU_BASED2, cap2ctrl(vmx_cap_procbased2, 0));
+	wvmcs(vcpu, VMCS_CTRL_VMENTRY_CONTROLS, cap2ctrl(vmx_cap_entry, 0));
+	wvmcs(vcpu, VMCS_CTRL_EXC_BITMAP, 0xffffffff);
+	wvmcs(vcpu, VMCS_CTRL_CR0_MASK, 0x60000000);
+	wvmcs(vcpu, VMCS_CTRL_CR0_SHADOW, 0);
+	wvmcs(vcpu, VMCS_CTRL_CR4_MASK, 0);
+	wvmcs(vcpu, VMCS_CTRL_CR4_SHADOW, 0);
 	/* set VMCS guest state fields */
-	wvmcs(vcpu, VMCS_GUEST_CS_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_CS, 0);
 	wvmcs(vcpu, VMCS_GUEST_CS_LIMIT, 0xffff);
-	wvmcs(vcpu, VMCS_GUEST_CS_ACCESS_RIGHTS, 0x9b);
+	wvmcs(vcpu, VMCS_GUEST_CS_AR, 0x9b);
 	wvmcs(vcpu, VMCS_GUEST_CS_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_DS_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_DS, 0);
 	wvmcs(vcpu, VMCS_GUEST_DS_LIMIT, 0xffff);
-	wvmcs(vcpu, VMCS_GUEST_DS_ACCESS_RIGHTS, 0x93);
+	wvmcs(vcpu, VMCS_GUEST_DS_AR, 0x93);
 	wvmcs(vcpu, VMCS_GUEST_DS_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_ES_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_ES, 0);
 	wvmcs(vcpu, VMCS_GUEST_ES_LIMIT, 0xffff);
-	wvmcs(vcpu, VMCS_GUEST_ES_ACCESS_RIGHTS, 0x93);
+	wvmcs(vcpu, VMCS_GUEST_ES_AR, 0x93);
 	wvmcs(vcpu, VMCS_GUEST_ES_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_FS_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_FS, 0);
 	wvmcs(vcpu, VMCS_GUEST_FS_LIMIT, 0xffff);
-	wvmcs(vcpu, VMCS_GUEST_FS_ACCESS_RIGHTS, 0x93);
+	wvmcs(vcpu, VMCS_GUEST_FS_AR, 0x93);
 	wvmcs(vcpu, VMCS_GUEST_FS_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_GS_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_GS, 0);
 	wvmcs(vcpu, VMCS_GUEST_GS_LIMIT, 0xffff);
-	wvmcs(vcpu, VMCS_GUEST_GS_ACCESS_RIGHTS, 0x93);
+	wvmcs(vcpu, VMCS_GUEST_GS_AR, 0x93);
 	wvmcs(vcpu, VMCS_GUEST_GS_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_SS_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_SS, 0);
 	wvmcs(vcpu, VMCS_GUEST_SS_LIMIT, 0xffff);
-	wvmcs(vcpu, VMCS_GUEST_SS_ACCESS_RIGHTS, 0x93);
+	wvmcs(vcpu, VMCS_GUEST_SS_AR, 0x93);
 	wvmcs(vcpu, VMCS_GUEST_SS_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_LDTR_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_LDTR, 0);
 	wvmcs(vcpu, VMCS_GUEST_LDTR_LIMIT, 0);
-	wvmcs(vcpu, VMCS_GUEST_LDTR_ACCESS_RIGHTS, 0x10000);
+	wvmcs(vcpu, VMCS_GUEST_LDTR_AR, 0x10000);
 	wvmcs(vcpu, VMCS_GUEST_LDTR_BASE, 0);
 
-	wvmcs(vcpu, VMCS_GUEST_TR_SELECTOR, 0);
+	wvmcs(vcpu, VMCS_GUEST_TR, 0);
 	wvmcs(vcpu, VMCS_GUEST_TR_LIMIT, 0);
-	wvmcs(vcpu, VMCS_GUEST_TR_ACCESS_RIGHTS, 0x83);
+	wvmcs(vcpu, VMCS_GUEST_TR_AR, 0x83);
 	wvmcs(vcpu, VMCS_GUEST_TR_BASE, 0);
 
 	wvmcs(vcpu, VMCS_GUEST_GDTR_LIMIT, 0);
@@ -200,11 +200,11 @@ main(int argc, char **argv)
 			abort();
 		}
 		/* handle VMEXIT */
-		uint64_t exit_reason = rvmcs(vcpu, VMCS_EXIT_REASON);
+		uint64_t exit_reason = rvmcs(vcpu, VMCS_RO_EXIT_REASON);
 
 		switch (exit_reason) {
-			case EXIT_REASON_EXCEPTION: {
-				uint8_t interrupt_number = rvmcs(vcpu, VMCS_IDT_VECTORING_INFO) & 0xFF;
+			case VMX_REASON_EXC_NMI: {
+				uint8_t interrupt_number = rvmcs(vcpu, VMCS_RO_IDT_VECTOR_INFO) & 0xFF;
 				int Status = Kernel.dispatch(interrupt_number);
 				switch (Status) {
 					case DOSKernel::STATUS_HANDLED:
@@ -222,20 +222,20 @@ main(int argc, char **argv)
 				}
 				break;
 			}
-			case EXIT_REASON_EXT_INTR:
+			case VMX_REASON_IRQ:
 				/* VMEXIT due to host interrupt, nothing to do */
 #if DEBUG
 				printf("IRQ\n");
 #endif
 				break;
-			case EXIT_REASON_HLT:
+			case VMX_REASON_HLT:
 				/* guest executed HLT */
 #if DEBUG
 				printf("HLT\n");
 #endif
 				stop = 1;
 				break;
-			case EXIT_REASON_EPT_FAULT:
+			case VMX_REASON_EPT_VIOLATION:
 				/* disambiguate between EPT cold misses and MMIO */
 				/* ... handle MMIO ... */
 				break;
