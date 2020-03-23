@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <Hypervisor/hv.h>
 #include <Hypervisor/hv_vmx.h>
 
 class DOSKernel {
